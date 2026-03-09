@@ -1,0 +1,194 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: #ffffff;
+    /* Clean white background */
+    color: #0a0a0a;
+    /* Deep black text */
+    font-family: 'Inter', 'DM Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #fafafa;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #e5e5e5;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #a3a3a3;
+  }
+}
+
+@layer components {
+
+  /* Premium Soft Panel */
+  .panel {
+    @apply bg-white border border-paper-200 rounded-2xl shadow-subtle transition-all duration-300;
+  }
+
+  .panel:hover {
+    @apply shadow-elegant border-paper-300;
+  }
+
+  /* Minimal Badges */
+  .badge-low {
+    @apply bg-paper-100 text-ink-700 border border-paper-200 px-3 py-1 rounded-full text-xs font-medium tracking-wide;
+  }
+
+  .badge-medium {
+    @apply bg-paper-200 text-ink-800 border border-paper-300 px-3 py-1 rounded-full text-xs font-medium tracking-wide;
+  }
+
+  .badge-high {
+    @apply bg-ink-900 text-white border border-ink-900 px-3 py-1 rounded-full text-xs font-medium tracking-wide;
+  }
+
+  /* Alert row */
+  .alert-row-entering {
+    animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  /* Recording Dot */
+  .live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #0a0a0a;
+    animation: pulseSoft 2s ease-in-out infinite;
+  }
+
+  .live-dot-green {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #262626;
+    animation: pulseSoft 3s ease-in-out infinite;
+  }
+}
+
+/* Subtle Video Frame */
+.video-overlay-corner {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-color: #0a0a0a;
+  border-style: solid;
+  opacity: 0.2;
+  transition: opacity 0.3s ease;
+}
+
+/* Show corners clearly on hover of the video container */
+.group:hover .video-overlay-corner {
+  opacity: 0.8;
+}
+
+.corner-tl {
+  top: 12px;
+  left: 12px;
+  border-width: 2px 0 0 2px;
+  border-top-left-radius: 8px;
+}
+
+.corner-tr {
+  top: 12px;
+  right: 12px;
+  border-width: 2px 2px 0 0;
+  border-top-right-radius: 8px;
+}
+
+.corner-bl {
+  bottom: 12px;
+  left: 12px;
+  border-width: 0 0 2px 2px;
+  border-bottom-left-radius: 8px;
+}
+
+.corner-br {
+  bottom: 12px;
+  right: 12px;
+  border-width: 0 2px 2px 0;
+  border-bottom-right-radius: 8px;
+}
+
+/* Smooth Suspicion Score Ring */
+@keyframes scoreRingSmooth {
+  from {
+    stroke-dashoffset: 251;
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.score-ring {
+  animation: scoreRingSmooth 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  stroke: #0a0a0a;
+}
+
+/* Alert pulse - refined */
+@keyframes alertPulseMinimal {
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.05);
+  }
+
+  50% {
+    box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.02);
+  }
+}
+
+.alert-pulse {
+  animation: alertPulseMinimal 2s ease infinite;
+}
+
+/* Elegant Waveform */
+@keyframes waveBarSmooth {
+
+  0%,
+  100% {
+    transform: scaleY(0.4);
+    opacity: 0.6;
+  }
+
+  50% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+.wave-bar {
+  display: inline-block;
+  width: 4px;
+  background: #0a0a0a;
+  border-radius: 4px;
+  margin-right: 2px;
+  animation: waveBarSmooth 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}

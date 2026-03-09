@@ -1,0 +1,90 @@
+version: '3.9'
+
+services:
+  # ── MongoDB ────────────────────────────────────────────────────────────────
+  mongodb:
+    image: mongo:7.0
+    container_name: proctorAI-mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_DATABASE: ai_proctoring
+    volumes:
+      - mongodb_data:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - proctornet
+
+  # ── Backend (Node.js) ──────────────────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: proctorAI-backend
+    restart: unless-stopped
+    environment:
+      PORT: 5000
+      NODE_ENV: production
+      MONGODB_URI: mongodb://mongodb:27017/ai_proctoring
+      JWT_SECRET: change-me-in-production-please
+      AI_SERVICE_URL: http://ai-service:8000
+      FRONTEND_URL: http://localhost:3000
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongodb
+    networks:
+      - proctornet
+
+  # ── AI Service (Python) ────────────────────────────────────────────────────
+  ai-service:
+    build:
+      context: ./ai-services
+      dockerfile: Dockerfile
+    container_name: proctorAI-ai
+    restart: unless-stopped
+    environment:
+      PORT: 8000
+      HOST: 0.0.0.0
+      BACKEND_URL: http://backend:5000
+      WHISPER_MODEL: base
+      LOG_LEVEL: INFO
+    ports:
+      - "8000:8000"
+    # GPU support (comment out if no GPU)
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+    volumes:
+      - ai_models:/app/models
+    networks:
+      - proctornet
+
+  # ── Frontend (React) ───────────────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_BACKEND_URL: http://localhost:5000
+        VITE_AI_SERVICE_URL: http://localhost:8000
+    container_name: proctorAI-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - proctornet
+
+volumes:
+  mongodb_data:
+  ai_models:
+
+networks:
+  proctornet:
+    driver: bridge

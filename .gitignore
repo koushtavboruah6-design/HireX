@@ -1,0 +1,53 @@
+# Node
+node_modules/
+npm-debug.log*
+.npm
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+dist/
+*.egg-info/
+.eggs/
+
+# Build output
+frontend/dist/
+frontend/.vite/
+
+# Environment files
+.env
+.env.local
+.env.production
+backend/.env
+ai-services/.env
+frontend/.env.local
+
+# Models (large files — download separately)
+ai-services/models/*.pt
+ai-services/models/*.onnx
+*.pt
+*.onnx
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# MongoDB
+data/db/
+
+# Reports output
+reports/*.pdf
